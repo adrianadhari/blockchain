@@ -124,25 +124,25 @@ export const contractABI = [
 
 export const contractAddress = "0x1f12aae5158eb02e3d2fe987fb0affd0d498be56";
 
-export const getWeb3 = async () => {
-  if (window.ethereum) {
+export const getWeb3 = async (withWallet = true) => {
+  if (withWallet && window.ethereum) {
     const web3 = new Web3(window.ethereum);
     try {
-      await window.ethereum.request({ method: "eth_requestAccounts" }); // Minta akses ke akun MetaMask
+      await window.ethereum.request({ method: "eth_requestAccounts" });
       return web3;
     } catch (error) {
       console.error("Akses MetaMask ditolak:", error);
       return null;
     }
   } else {
-    console.error("MetaMask tidak ditemukan!");
-    return null;
+    // Read-only mode (tanpa MetaMask)
+    return new Web3("https://sepolia.base.org"); // public RPC Base Sepolia
   }
 };
 
-export const getContract = async () => {
-  const web3 = await getWeb3();
+export const getContract = async (withWallet = true) => {
+  const web3 = await getWeb3(withWallet);
   if (!web3) return null;
-  
+
   return new web3.eth.Contract(contractABI, contractAddress);
 };
