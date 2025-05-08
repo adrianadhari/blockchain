@@ -4,7 +4,7 @@ import { getContract, getWeb3 } from "../contract";
 const useBlockchain = () => {
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const [pemilikKontrak, setPemilikKontrak] = useState(null);
 
   const connectWallet = async () => {
     try {
@@ -18,15 +18,15 @@ const useBlockchain = () => {
         const contractInstance = await getContract();
         setContract(contractInstance);
 
-        const contractOwner = await contractInstance.methods.owner().call();
-        setOwner(contractOwner);
+        const contractPemilik = await contractInstance.methods.pemilikKontrak().call();
+        setPemilikKontrak(contractPemilik);
       }
     } catch (error) {
       console.error("Gagal menghubungkan wallet:", error);
     }
   };
 
-  return { contract, account, owner, connectWallet };
+  return { contract, account, pemilikKontrak, connectWallet };
 };
 
 export default useBlockchain;

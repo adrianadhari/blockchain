@@ -1,13 +1,8 @@
 import useBlockchain from "@/hooks/useBlockchain";
 import VerifyForm from "@/components/VerifyForm";
-import { useEffect } from "react";
 
 const VerifyPage = () => {
-  const { contract } = useBlockchain();
-  useEffect(() => {
-    console.log("Contract di verify:", contract);
-  }, [contract]);
-  
+  const { contract } = useBlockchain();  
 
   return (
     <div className="max-w-xl mx-auto p-6">

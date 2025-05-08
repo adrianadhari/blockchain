@@ -5,11 +5,13 @@ const VerificationResult = ({ result }) => {
     }
     return (
       <div className="mt-4 border rounded p-4 bg-gray-50">
-        <p><strong>Nomor Sertifikat Tanah:</strong> {result.landNumber}</p>
-        <p><strong>IPFS CID:</strong> {result.ipfsCID}</p>
-        <p><strong>Waktu Pencatatan:</strong> {result.timestamp}</p>
+        <p><strong>Nomor Sertifikat Tanah:</strong> {result.nomorSertifikat}</p>
+        <p><strong>IPFS CID:</strong> {result.cidIpfs}</p>
+        <p><strong>NIB:</strong> {result.nib}</p>
+        <p><strong>Pemegang Hak:</strong> {result.pemegangHak}</p>
+        <p><strong>Waktu Pencatatan:</strong> {result.waktuTerdaftar}</p>
         <a
-          href={`https://ipfs.io/ipfs/${result.ipfsCID}`}
+          href={`https://ipfs.io/ipfs/${result.cidIpfs}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-500 underline"

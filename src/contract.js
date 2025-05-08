@@ -1,128 +1,170 @@
 import Web3 from "web3";
 
 export const contractABI = [
-    {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "landNumber",
-          "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "ipfsCID",
-          "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "timestamp",
-          "type": "uint256"
-        }
-      ],
-      "name": "CertificateRegistered",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "name": "certificates",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "landNumber",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "ipfsCID",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "timestamp",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_landNumber",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_ipfsCID",
-          "type": "string"
-        }
-      ],
-      "name": "registerCertificate",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_landNumber",
-          "type": "string"
-        }
-      ],
-      "name": "verifyCertificate",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "nomorSertifikat",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "cidIpfs",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "nib",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "pemegangHak",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "waktuTerdaftar",
+        "type": "uint256"
+      }
+    ],
+    "name": "SertifikatTerdaftar",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_nomorSertifikat",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_cidIpfs",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_nib",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_pemegangHak",
+        "type": "string"
+      }
+    ],
+    "name": "daftarSertifikat",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "dataSertifikat",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "nomorSertifikat",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "cidIpfs",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "nib",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "pemegangHak",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "waktuTerdaftar",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pemilikKontrak",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_nomorSertifikat",
+        "type": "string"
+      }
+    ],
+    "name": "verifikasiSertifikat",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
 
-export const contractAddress = "0x1f12aae5158eb02e3d2fe987fb0affd0d498be56";
+export const contractAddress = "0xF584d99f2E672e1757B7D22a4B75e06fC83e8ED9";
 
 export const getWeb3 = async (withWallet = true) => {
   if (withWallet && window.ethereum) {

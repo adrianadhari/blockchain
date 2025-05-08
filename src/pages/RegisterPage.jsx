@@ -3,7 +3,7 @@ import ConnectWalletButton from "../components/ConnectWalletButton";
 import RegisterForm from "../components/RegisterForm";
 
 function RegisterPage() {
-  const { contract, account, owner, connectWallet } = useBlockchain();
+  const { contract, account, pemilikKontrak, connectWallet } = useBlockchain();
 
   return (
     <div className="max-w-xl mx-auto p-6">
@@ -13,7 +13,7 @@ function RegisterPage() {
       ) : (
         <>
           <p className="text-sm text-gray-600 mb-4">Akun terhubung: {account}</p>
-          <RegisterForm contract={contract} account={account} owner={owner} />
+          <RegisterForm contract={contract} account={account} pemilikKontrak={pemilikKontrak} />
         </>
       )}
     </div>

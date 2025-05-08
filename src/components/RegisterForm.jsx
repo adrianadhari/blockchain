@@ -1,43 +1,52 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { uploadToIPFS } from "@/utils/uploadToIPFS"; // Update untuk pakai upload ke Express backend
+import { uploadToIPFS } from "@/utils/uploadToIPFS";
 
-const RegisterForm = ({ contract, account, owner }) => {
-  const [landNumber, setLandNumber] = useState("");
-  const [loading, setLoading] = useState(false);
+const RegisterForm = ({ contract, account, pemilikKontrak }) => {
+  const [nomorSertifikat, setNomorSertifikat] = useState("");
+  const [nib, setNib] = useState("");
+  const [pemegangHak, setPemegangHak] = useState("");
   const [file, setFile] = useState(null);
   const [ipfsUrl, setIpfsUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
     if (!contract || !account) return alert("Wallet belum terhubung");
-    if (account.toLowerCase() !== owner?.toLowerCase())
+    if (account.toLowerCase() !== pemilikKontrak?.toLowerCase())
       return alert("Wallet tidak memiliki otorisasi");
-    if (!file) return alert("Pilih file sertifikat terlebih dahulu");
-
-    const cleanLandNumber = landNumber.trim().replace(/[`'"]/g, "");
+    if (!file || !nomorSertifikat || !nib || !pemegangHak)
+      return alert("Isi semua data dan pilih file sertifikat");
 
     try {
       setLoading(true);
 
-      // 1. Upload file ke backend Express (dan IPFS)
-      const { cid, url } = await uploadToIPFS(file); // Panggil function uploadToIPFS ke backend Express
+      // Upload ke IPFS lewat backend
+      const { cid, url } = await uploadToIPFS(file);
       console.log("CID:", cid);
 
-      // 2. Simpan CID ke blockchain
+      // Kirim ke blockchain
       await contract.methods
-        .registerCertificate(cleanLandNumber, cid)
+        .daftarSertifikat(
+          nomorSertifikat.trim(),
+          cid,
+          nib.trim(),
+          pemegangHak.trim()
+        )
         .send({ from: account });
 
-      setIpfsUrl(url); // Set URL IPFS yang bisa diakses
+      setIpfsUrl(url);
       alert("✅ Sertifikat berhasil didaftarkan!");
-      setLandNumber("");
+
+      // Reset form
+      setNomorSertifikat("");
+      setNib("");
+      setPemegangHak("");
       setFile(null);
     } catch (err) {
       console.error("Tx Error:", err);
-
       try {
         const existing = await contract.methods
-          .verifyCertificate(cleanLandNumber)
+          .verifikasiSertifikat(nomorSertifikat.trim())
           .call();
 
         if (existing && existing[0] !== "") {
@@ -57,19 +66,38 @@ const RegisterForm = ({ contract, account, owner }) => {
   return (
     <div className="space-y-2 border p-4 rounded-xl shadow">
       <h2 className="text-lg font-semibold">Registrasi Sertifikat</h2>
+
       <input
         type="text"
-        placeholder="Nomor Tanah"
-        value={landNumber}
-        onChange={(e) => setLandNumber(e.target.value)}
-        className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Nomor Sertifikat"
+        value={nomorSertifikat}
+        onChange={(e) => setNomorSertifikat(e.target.value)}
+        className="w-full border border-gray-300 px-3 py-2 rounded-md"
       />
+
+      <input
+        type="text"
+        placeholder="NIB"
+        value={nib}
+        onChange={(e) => setNib(e.target.value)}
+        className="w-full border border-gray-300 px-3 py-2 rounded-md"
+      />
+
+      <input
+        type="text"
+        placeholder="Pemegang Hak"
+        value={pemegangHak}
+        onChange={(e) => setPemegangHak(e.target.value)}
+        className="w-full border border-gray-300 px-3 py-2 rounded-md"
+      />
+
       <input
         type="file"
         onChange={(e) => setFile(e.target.files[0])}
         accept=".pdf,.png,.jpg"
         className="w-full border border-gray-300 px-3 py-2 rounded-md file:bg-blue-600 file:text-white file:border-none file:px-4 file:py-2"
       />
+
       <button
         onClick={handleRegister}
         disabled={loading}
@@ -77,9 +105,10 @@ const RegisterForm = ({ contract, account, owner }) => {
       >
         {loading ? "Mendaftarkan..." : "Daftarkan Sertifikat"}
       </button>
+
       {ipfsUrl && (
         <p className="text-sm mt-2">
-          CID IPFS:{" "}
+          Sertifikat IPFS:{" "}
           <a
             href={ipfsUrl}
             target="_blank"

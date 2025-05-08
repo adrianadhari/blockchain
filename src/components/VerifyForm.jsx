@@ -4,7 +4,7 @@ import { getContract } from "../contract";
 
 const VerifyForm = () => {
   const [contract, setContract] = useState(null);
-  const [verifyLandNumber, setVerifyLandNumber] = useState("");
+  const [verifikasiNomorSertifikat, setVerifikasiNomorSertifikat] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,12 +22,14 @@ const VerifyForm = () => {
     setResult(null);
     try {
       setLoading(true);
-      const trimmed = verifyLandNumber.trim();
-      const res = await contract.methods.verifyCertificate(trimmed).call();
+      const trimmed = verifikasiNomorSertifikat.trim();
+      const res = await contract.methods.verifikasiSertifikat(trimmed).call();
       const data = {
-        landNumber: res[0],
-        ipfsCID: res[1],
-        timestamp: new Date(Number(res[2]) * 1000).toLocaleString("id-ID"),
+        nomorSertifikat: res[0],
+        cidIpfs: res[1],
+        nib: res[2],
+        pemegangHak: res[3],
+        waktuTerdaftar: new Date(Number(res[4]) * 1000).toLocaleString("id-ID"),
       };
       setResult(data);
     } catch (err) {
@@ -44,8 +46,8 @@ const VerifyForm = () => {
       <input
         type="text"
         placeholder="Masukkan Nomor Tanah"
-        value={verifyLandNumber}
-        onChange={(e) => setVerifyLandNumber(e.target.value)}
+        value={verifikasiNomorSertifikat}
+        onChange={(e) => setVerifikasiNomorSertifikat(e.target.value)}
         className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button
