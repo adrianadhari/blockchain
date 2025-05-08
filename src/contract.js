@@ -111,6 +111,25 @@ export const contractABI = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "nibTerdaftar",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "pemilikKontrak",
     "outputs": [
@@ -164,7 +183,7 @@ export const contractABI = [
   }
 ];
 
-export const contractAddress = "0xF584d99f2E672e1757B7D22a4B75e06fC83e8ED9";
+export const contractAddress = "0xc8388B4aCBA22c24D13D8DB044e8554664F342ec";
 
 export const getWeb3 = async (withWallet = true) => {
   if (withWallet && window.ethereum) {

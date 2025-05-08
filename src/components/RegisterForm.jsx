@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { uploadToIPFS } from "@/utils/uploadToIPFS";
@@ -45,19 +46,29 @@ const RegisterForm = ({ contract, account, pemilikKontrak }) => {
     } catch (err) {
       console.error("Tx Error:", err);
       try {
-        const existing = await contract.methods
-          .verifikasiSertifikat(nomorSertifikat.trim())
-          .call();
+        const [nibSudah, sertifikatSudah] = await Promise.all([
+          contract.methods.nibTerdaftar(nib.trim()).call(),
+          contract.methods
+            .verifikasiSertifikat(nomorSertifikat.trim())
+            .call()
+            .then((s) => s && s[0] !== "")
+            .catch(() => false), // jika tidak ditemukan, anggap false
+        ]);
 
-        if (existing && existing[0] !== "") {
-          alert("❌ Sertifikat ini sudah terdaftar di blockchain!");
-        } else {
-          alert("⚠️ Gagal mendaftarkan sertifikat karena alasan lain.");
-        }
-      } catch (innerErr) {
-        console.error("Verifikasi error:", innerErr);
-        alert("Gagal memverifikasi status sertifikat.");
+        let pesan = "";
+        if (nibSudah)
+          pesan += "❌ NIB ini sudah pernah terdaftar di blockchain!\n";
+        if (sertifikatSudah)
+          pesan +=
+            "❌ Nomor sertifikat ini sudah pernah terdaftar di blockchain!";
+
+        if (pesan) return alert(pesan.trim());
+      } catch (_) {
+        // fallback jika ada error saat pengecekan
       }
+
+      // fallback generic
+      alert("⚠️ Gagal mendaftarkan sertifikat karena alasan lain.");
     } finally {
       setLoading(false);
     }
