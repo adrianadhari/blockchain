@@ -2,6 +2,11 @@
 import axios from "axios";
 
 export const uploadToIPFS = async (file) => {
+  // const maxFileSize = 5 * 1024 * 1024; // 5MB
+  // if (file.size > maxFileSize) {
+  //   throw new Error("File terlalu besar. Maksimum 5MB.");
+  // }
+
   const formData = new FormData();
   formData.append("file", file);
 
